@@ -35,7 +35,7 @@ while IFS= read -r entry; do
   if [ "$dir_override" != "null" ] && [ -n "$dir_override" ]; then
     dir="$dir_override"
   else
-    base="${repo##*/}"; dir="${base%-plugin}"
+    base="${repo##*/}"; dir="${base%-plugin}"; dir="${dir%-rule-exclusions}"
   fi
   dest="${STAGING}/${dir}"
   [ -d "$dest" ] && die "duplicate staging dir: ${dir} (set a dir override)"
@@ -99,5 +99,4 @@ mv "$tmp" "$MANIFEST"
 cp "$MANIFEST" "${STAGING}/manifest.json"
 
 log "staged ${total_files} files; build_digest sha256:${digest}"
-[ "${1:-}" = "--dry-run" ] && { log "dry-run: no push"; exit 0; }
 log "staging complete"
