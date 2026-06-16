@@ -16,3 +16,7 @@ run = "scripts/build-plugins.sh"
 [tasks.sync]
 description = "Reconcile registry and resolve versions into plugins.yaml"
 run = "scripts/sync-plugins.sh"
+
+[tasks.clean]
+description = "Remove generated build artifacts"
+run = "rm -rf staging dist manifest.json *.tar.gz SHA256SUMS"
