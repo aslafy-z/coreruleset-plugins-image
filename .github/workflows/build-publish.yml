@@ -1,0 +1,152 @@
+name: build-publish
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  workflow_dispatch: {}
+
+# Serialize so two builds cannot both read a stale :latest and double-publish.
+concurrency:
+  group: build-publish
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/crs-plugins
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # commit README, create release
+      packages: write       # push to GHCR
+      id-token: write       # cosign keyless OIDC + attestation
+      attestations: write   # SLSA provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: sigstore/cosign-installer@v3
+
+      - name: Stage plugins and build manifest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: scripts/build-plugins.sh --dry-run
+
+      - name: Gate and allocate version
+        id: gate
+        run: |
+          set -euo pipefail
+          new_digest="$(jq -r .build_digest staging/manifest.json)"
+
+          # Prior digest from :latest. 404 -> bootstrap; transient -> fail loud.
+          prior="BOOTSTRAP"
+          if crane export "${IMAGE}:latest" - >latest.tar 2>err.txt; then
+            prior="$(tar -xO -f latest.tar ./manifest.json | jq -r .build_digest)"
+          elif grep -qiE 'MANIFEST_UNKNOWN|NAME_UNKNOWN|not found|404' err.txt; then
+            prior="BOOTSTRAP"
+          else
+            echo "::error::transient error reading :latest"; cat err.txt; exit 1
+          fi
+
+          if [ "$prior" != "BOOTSTRAP" ] && [ "$new_digest" = "$prior" ]; then
+            # Digest matches: noop unless a side effect is missing (repair).
+            # Side-effect probe: does the release for the recorded version exist?
+            prev_version="$(tar -xO -f latest.tar ./manifest.json | jq -r .version)"
+            if gh release view "$prev_version" >/dev/null 2>&1; then
+              echo "decision=noop" >>"$GITHUB_OUTPUT"; exit 0
+            fi
+            echo "decision=repair (missing release ${prev_version})" >&2
+            echo "version=${prev_version}" >>"$GITHUB_OUTPUT"
+            echo "decision=repair" >>"$GITHUB_OUTPUT"; exit 0
+          fi
+
+          # Publish: allocate YYYY.MM.N = max(N)+1 for the month, existence-checked.
+          yyyymm="$(date -u +%Y.%m)"
+          calver() {
+            awk -v m="$1" 'BEGIN{max=-1}
+              $0 ~ "^"m"\\.[0-9]+$" { n=$0; sub(/.*\./,"",n); if(n+0>max)max=n+0 }
+              END{ printf "%s.%d\n", m, max+1 }'
+          }
+          crane ls "$IMAGE" 2>/dev/null | grep -E "^${yyyymm//./\\.}\\.[0-9]+$" >tags.txt || true
+          version="$(calver "$yyyymm" <tags.txt)"
+          while crane manifest "${IMAGE}:${version}" >/dev/null 2>&1; do
+            echo "$version" >>tags.txt
+            version="$(calver "$yyyymm" <tags.txt)"
+          done
+          echo "version=${version}" >>"$GITHUB_OUTPUT"
+          echo "decision=publish" >>"$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build, push, sign
+        id: image
+        if: startsWith(steps.gate.outputs.decision, 'publish') || startsWith(steps.gate.outputs.decision, 'repair')
+        run: |
+          set -euo pipefail
+          version="${{ steps.gate.outputs.version }}"
+          tmp="$(mktemp)"; jq --arg v "$version" '.version=$v' staging/manifest.json >"$tmp"
+          mv "$tmp" staging/manifest.json; cp staging/manifest.json manifest.json
+          docker buildx build --platform linux/amd64 \
+            -t "${IMAGE}:${version}" -t "${IMAGE}:latest" --push .
+          digest="$(crane digest "${IMAGE}:${version}")"
+          cosign sign --yes "${IMAGE}@${digest}"
+          echo "digest=${digest}" >>"$GITHUB_OUTPUT"
+
+      - name: SLSA provenance attestation
+        if: steps.image.outcome == 'success'
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true
+
+      - name: Render docs and pack artifacts
+        if: steps.image.outcome == 'success'
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          prev=""
+          if crane export "${IMAGE}:latest" - 2>/dev/null | tar -xO ./manifest.json >dist/prev.json 2>/dev/null; then
+            prev="dist/prev.json"
+          fi
+          PREV_MANIFEST="$prev" RELEASE_OUT=dist/release-notes.md scripts/render-docs.sh manifest.json
+          scripts/pack-artifacts.sh
+
+      - name: Commit README table back to main
+        if: steps.image.outcome == 'success'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- README.md; then
+            git add README.md
+            git commit -m "docs(readme): update bundled plugins for ${{ steps.gate.outputs.version }}"
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push origin HEAD:main && break
+              sleep 2
+            done
+          fi
+
+      - name: Create or update GitHub Release
+        if: steps.image.outcome == 'success'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.gate.outputs.version }}
+          name: ${{ steps.gate.outputs.version }}
+          body_path: dist/release-notes.md
+          files: |
+            dist/manifest.json
+            dist/crs-plugins-${{ steps.gate.outputs.version }}.tar.gz
+            dist/SHA256SUMS
