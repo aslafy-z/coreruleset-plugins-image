@@ -17,6 +17,25 @@ run = "scripts/build-plugins.sh"
 description = "Reconcile registry and resolve versions into plugins.yaml"
 run = "scripts/sync-plugins.sh"
 
+[tasks.artifact]
+description = "Pack release tarball and checksums from staged payload"
+run = "scripts/pack-artifacts.sh"
+
+[tasks.docs]
+description = "Render README plugins table and release notes from manifest"
+run = "scripts/render-docs.sh manifest.json"
+
+[tasks.all]
+description = "Sync, build, render docs, and pack artifacts locally (stamps a dev version)"
+run = """
+scripts/sync-plugins.sh
+scripts/build-plugins.sh
+tmp="$(mktemp)"; jq '.version="0.0.0-dev"' staging/manifest.json >"$tmp"
+mv "$tmp" staging/manifest.json; cp staging/manifest.json manifest.json
+scripts/render-docs.sh manifest.json
+scripts/pack-artifacts.sh
+"""
+
 [tasks.clean]
 description = "Remove generated build artifacts"
 run = "rm -rf staging dist manifest.json *.tar.gz SHA256SUMS"
