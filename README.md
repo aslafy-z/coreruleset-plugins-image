@@ -83,8 +83,9 @@ FROM your-registry/envoy-coraza:latest
 COPY --from=plugins / /etc/crs/plugins/
 ```
 
-Pinning to a tag (rather than `:latest`) keeps the build reproducible; Renovate's
-default `docker` versioning will open update PRs as new versions publish.
+Pinning to a tag (rather than `:latest`) keeps the build reproducible while still
+receiving update PRs from an automated dependency updater (see
+[Versioning](#versioning)).
 
 ## Wiring the plugins into the filter
 
@@ -176,10 +177,10 @@ cosign verify-attestation "$IMAGE" \
 ## Versioning
 
 Tags use CalVer `YYYY.MM.N`, where `N` is an unbounded per-month counter starting
-at `0` and incrementing on every published change. The three numeric segments are
-parsed and ordered out of the box by Renovate's default `docker` versioning, so
-consumers pinning a tag get correct update PRs with no extra configuration. The
-exact commit and timestamp are recorded in `manifest.json`.
+at `0` and incrementing on every published change. The three numeric segments sort
+as standard `docker` versions, so dependency updaters such as Renovate or
+Dependabot order them and open update PRs with no extra configuration. The exact
+commit and timestamp are recorded in `manifest.json`.
 
 ## How it works
 
