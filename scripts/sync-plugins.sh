@@ -15,6 +15,20 @@ command -v curl >/dev/null || die "curl not found"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
+CRS_COMPATIBILITY="${CRS_COMPATIBILITY:-4.x}"
+
+# Bootstrap a minimal file if absent; reconciliation fills it from the registry.
+if [ ! -f "$PLUGINS_FILE" ]; then
+  log "creating ${PLUGINS_FILE} (did not exist)"
+  cat >"$PLUGINS_FILE" <<EOF
+# Source of truth for the bundled CRS plugins.
+# Curated fields are human-edited; the \`resolved\` block is written by the
+# nightly sync job via PR, so committed SHAs are always reviewed before build.
+crs_compatibility: "${CRS_COMPATIBILITY}"
+plugins: []
+EOF
+fi
+
 gh_get() {
   curl -fsSL \
     -H "Accept: application/vnd.github+json" \
