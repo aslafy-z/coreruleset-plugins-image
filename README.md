@@ -9,7 +9,7 @@ it references by `Include` directive.
 
 - A `FROM scratch` image whose root contains `<plugin-dir>/<files>` plus
   `manifest.json`.
-- Published to GHCR as `ghcr.io/<owner>/crs-plugins:YYYY.MM.N` and `:latest`.
+- Published to GHCR as `ghcr.io/aslafy-z/coreruleset-plugins:YYYY.MM.N` and `:latest`.
 - A matching GitHub Release attaches `manifest.json` and a `tar.gz` of the same
   payload for registry-free consumption.
 
@@ -36,7 +36,7 @@ spec:
   volumes:
     - name: crs-plugins
       image:
-        reference: ghcr.io/<owner>/crs-plugins:latest   # or :2026.06.0
+        reference: ghcr.io/aslafy-z/coreruleset-plugins:latest   # or :2026.06.0
 ```
 
 ```yaml
@@ -72,4 +72,6 @@ extra config.
 ## Bundled plugins
 
 <!-- BEGIN BUNDLED PLUGINS -->
+| Plugin | Version | Origin | Commit |
+| --- | --- | --- | --- |
 <!-- END BUNDLED PLUGINS -->

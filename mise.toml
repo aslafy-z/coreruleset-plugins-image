@@ -12,3 +12,7 @@ run = "shellcheck scripts/*.sh"
 [tasks.build]
 description = "Stage plugins and build manifest without pushing"
 run = "scripts/build-plugins.sh --dry-run"
+
+[tasks.sync]
+description = "Reconcile registry and resolve versions into plugins.yaml"
+run = "scripts/sync-plugins.sh"
