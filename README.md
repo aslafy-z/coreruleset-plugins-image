@@ -45,15 +45,47 @@ available without rebuilding the filter.
   WAF image with `COPY --from`. A `manifest.json` and `tar.gz` are also attached to
   each GitHub Release for registry-free consumption.
 
+## Bundled plugins
+
+<!-- BEGIN BUNDLED PLUGINS -->
+| Plugin | Version | Origin | Commit |
+| --- | --- | --- | --- |
+| [EsadCetiner/iredadmin-rule-exclusions-plugin](https://github.com/EsadCetiner/iredadmin-rule-exclusions-plugin) | 1.0.1 | registry | `d8a982f` |
+| [EsadCetiner/plausible-rule-exclusions-plugin](https://github.com/EsadCetiner/plausible-rule-exclusions-plugin) | 1.0.0 | registry | `67d5d64` |
+| [EsadCetiner/roundcube-rule-exclusions-plugin](https://github.com/EsadCetiner/roundcube-rule-exclusions-plugin) | 1.0.4 | registry | `ed73635` |
+| [EsadCetiner/sogo-rule-exclusions-plugin](https://github.com/EsadCetiner/sogo-rule-exclusions-plugin) | 1.0.4 | registry | `4d0f073` |
+| [coreruleset/antivirus-plugin](https://github.com/coreruleset/antivirus-plugin) | e6b53a7 | registry | `e6b53a7` |
+| [coreruleset/auto-decoding-plugin](https://github.com/coreruleset/auto-decoding-plugin) | 5d096ad | registry | `5d096ad` |
+| [coreruleset/body-decompress-plugin](https://github.com/coreruleset/body-decompress-plugin) | 80e7d9b | registry | `80e7d9b` |
+| [coreruleset/cpanel-rule-exclusions-plugin](https://github.com/coreruleset/cpanel-rule-exclusions-plugin) | 1.0.0 | registry | `2fd1cab` |
+| [coreruleset/database-logging-plugin](https://github.com/coreruleset/database-logging-plugin) | 1f6ea17 | registry | `1f6ea17` |
+| [coreruleset/dokuwiki-rule-exclusions-plugin](https://github.com/coreruleset/dokuwiki-rule-exclusions-plugin) | 1.0.0 | registry | `0099676` |
+| [coreruleset/dos-protection-plugin-modsecurity](https://github.com/coreruleset/dos-protection-plugin-modsecurity) | 98962f1 | registry | `98962f1` |
+| [coreruleset/drupal-rule-exclusions-plugin](https://github.com/coreruleset/drupal-rule-exclusions-plugin) | 1.0.0 | registry | `6771319` |
+| [coreruleset/fake-bot-plugin](https://github.com/coreruleset/fake-bot-plugin) | 1.1.0 | registry | `e7c675e` |
+| [coreruleset/false-positive-report-plugin](https://github.com/coreruleset/false-positive-report-plugin) | b33cfa3 | registry | `b33cfa3` |
+| [coreruleset/google-oauth2-plugin](https://github.com/coreruleset/google-oauth2-plugin) | 1.0.0 | registry | `4434424` |
+| [coreruleset/incubator-plugin](https://github.com/coreruleset/incubator-plugin) | b87b1d2 | registry | `b87b1d2` |
+| [coreruleset/nextcloud-rule-exclusions-plugin](https://github.com/coreruleset/nextcloud-rule-exclusions-plugin) | 1.6.0 | registry | `83ab69f` |
+| [coreruleset/phpbb-rule-exclusions-plugin](https://github.com/coreruleset/phpbb-rule-exclusions-plugin) | 1.0.0 | registry | `5f1e034` |
+| [coreruleset/phpmyadmin-rule-exclusions-plugin](https://github.com/coreruleset/phpmyadmin-rule-exclusions-plugin) | 1.1.0 | registry | `6629e88` |
+| [coreruleset/referer-hardening-plugin](https://github.com/coreruleset/referer-hardening-plugin) | f3220b2 | registry | `f3220b2` |
+| [coreruleset/template-plugin](https://github.com/coreruleset/template-plugin) | 79a4ec5 | registry | `79a4ec5` |
+| [coreruleset/traffic-observation-plugin](https://github.com/coreruleset/traffic-observation-plugin) | 2cde930 | registry | `2cde930` |
+| [coreruleset/wordpress-rule-exclusions-plugin](https://github.com/coreruleset/wordpress-rule-exclusions-plugin) | 1.2.0 | registry | `161bb90` |
+| [coreruleset/xenforo-rule-exclusions-plugin](https://github.com/coreruleset/xenforo-rule-exclusions-plugin) | 1.0.0 | registry | `193288a` |
+| [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.1.2 | registry | `2e2c2a5` |
+| [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 665bb12 | registry | `665bb12` |
+<!-- END BUNDLED PLUGINS -->
+
 ## Getting the files onto the WAF
 
-Pick the delivery method that fits your platform. All three land the same
+Pick the delivery method that fits your platform. Both land the same
 `<plugin>/<files>` tree at a path the filter can `Include`.
 
 ### Option A: Kubernetes image volume
 
-Mounts the image directly. Requires the `ImageVolume` feature (see
-[Requirements](#requirements)).
+Mounts the image directly, no copy step.
 
 ```yaml
 # Pod spec: image volume + the container's mount
@@ -68,6 +100,10 @@ spec:
       image:
         reference: ghcr.io/aslafy-z/coreruleset-plugins:latest   # or pin :2026.06.0
 ```
+
+Image volumes need the `ImageVolume` feature gate (alpha in v1.31, beta and on by
+default from v1.35, stable in v1.36) and a runtime that supports it (containerd
+2.0+, CRI-O 1.31+). On v1.31 to v1.34 enable the gate explicitly.
 
 ### Option B: Custom WAF image
 
@@ -124,21 +160,7 @@ plugin_config:
 > are split around the core rules. The `@` prefix marks resources embedded in the
 > filter; plain filesystem paths reference the mounted volume.
 
-### Requirements
-
-Kubernetes image volumes require the `ImageVolume` feature and a supporting
-runtime:
-
-| Kubernetes | `ImageVolume` state | Action |
-| --- | --- | --- |
-| v1.31 to v1.32 | Alpha (off) | Enable the feature gate |
-| v1.33 to v1.34 | Beta (off by default) | Enable the feature gate |
-| v1.35 | Beta (on by default) | None |
-| v1.36+ | Stable | None |
-
-Container runtime: containerd 2.0+ or CRI-O 1.31+.
-
-## Image layout
+## Image and tarball layout
 
 ```
 /                              # image root / tarball root
@@ -209,35 +231,3 @@ mise run lint       # shellcheck all scripts
 mise run clean      # remove generated build artifacts
 ```
 
-## Bundled plugins
-
-<!-- BEGIN BUNDLED PLUGINS -->
-| Plugin | Version | Origin | Commit |
-| --- | --- | --- | --- |
-| [EsadCetiner/iredadmin-rule-exclusions-plugin](https://github.com/EsadCetiner/iredadmin-rule-exclusions-plugin) | 1.0.1 | registry | `d8a982f` |
-| [EsadCetiner/plausible-rule-exclusions-plugin](https://github.com/EsadCetiner/plausible-rule-exclusions-plugin) | 1.0.0 | registry | `67d5d64` |
-| [EsadCetiner/roundcube-rule-exclusions-plugin](https://github.com/EsadCetiner/roundcube-rule-exclusions-plugin) | 1.0.4 | registry | `ed73635` |
-| [EsadCetiner/sogo-rule-exclusions-plugin](https://github.com/EsadCetiner/sogo-rule-exclusions-plugin) | 1.0.4 | registry | `4d0f073` |
-| [coreruleset/antivirus-plugin](https://github.com/coreruleset/antivirus-plugin) | e6b53a7 | registry | `e6b53a7` |
-| [coreruleset/auto-decoding-plugin](https://github.com/coreruleset/auto-decoding-plugin) | 5d096ad | registry | `5d096ad` |
-| [coreruleset/body-decompress-plugin](https://github.com/coreruleset/body-decompress-plugin) | 80e7d9b | registry | `80e7d9b` |
-| [coreruleset/cpanel-rule-exclusions-plugin](https://github.com/coreruleset/cpanel-rule-exclusions-plugin) | 1.0.0 | registry | `2fd1cab` |
-| [coreruleset/database-logging-plugin](https://github.com/coreruleset/database-logging-plugin) | 1f6ea17 | registry | `1f6ea17` |
-| [coreruleset/dokuwiki-rule-exclusions-plugin](https://github.com/coreruleset/dokuwiki-rule-exclusions-plugin) | 1.0.0 | registry | `0099676` |
-| [coreruleset/dos-protection-plugin-modsecurity](https://github.com/coreruleset/dos-protection-plugin-modsecurity) | 98962f1 | registry | `98962f1` |
-| [coreruleset/drupal-rule-exclusions-plugin](https://github.com/coreruleset/drupal-rule-exclusions-plugin) | 1.0.0 | registry | `6771319` |
-| [coreruleset/fake-bot-plugin](https://github.com/coreruleset/fake-bot-plugin) | 1.1.0 | registry | `e7c675e` |
-| [coreruleset/false-positive-report-plugin](https://github.com/coreruleset/false-positive-report-plugin) | b33cfa3 | registry | `b33cfa3` |
-| [coreruleset/google-oauth2-plugin](https://github.com/coreruleset/google-oauth2-plugin) | 1.0.0 | registry | `4434424` |
-| [coreruleset/incubator-plugin](https://github.com/coreruleset/incubator-plugin) | b87b1d2 | registry | `b87b1d2` |
-| [coreruleset/nextcloud-rule-exclusions-plugin](https://github.com/coreruleset/nextcloud-rule-exclusions-plugin) | 1.6.0 | registry | `83ab69f` |
-| [coreruleset/phpbb-rule-exclusions-plugin](https://github.com/coreruleset/phpbb-rule-exclusions-plugin) | 1.0.0 | registry | `5f1e034` |
-| [coreruleset/phpmyadmin-rule-exclusions-plugin](https://github.com/coreruleset/phpmyadmin-rule-exclusions-plugin) | 1.1.0 | registry | `6629e88` |
-| [coreruleset/referer-hardening-plugin](https://github.com/coreruleset/referer-hardening-plugin) | f3220b2 | registry | `f3220b2` |
-| [coreruleset/template-plugin](https://github.com/coreruleset/template-plugin) | 79a4ec5 | registry | `79a4ec5` |
-| [coreruleset/traffic-observation-plugin](https://github.com/coreruleset/traffic-observation-plugin) | 2cde930 | registry | `2cde930` |
-| [coreruleset/wordpress-rule-exclusions-plugin](https://github.com/coreruleset/wordpress-rule-exclusions-plugin) | 1.2.0 | registry | `161bb90` |
-| [coreruleset/xenforo-rule-exclusions-plugin](https://github.com/coreruleset/xenforo-rule-exclusions-plugin) | 1.0.0 | registry | `193288a` |
-| [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.1.2 | registry | `2e2c2a5` |
-| [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 665bb12 | registry | `665bb12` |
-<!-- END BUNDLED PLUGINS -->
