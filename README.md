@@ -8,17 +8,25 @@
 [![Signed](https://img.shields.io/badge/cosign-signed-brightgreen?logo=sigstore)](https://www.sigstore.dev)
 
 A single, minimal OCI image that bundles [OWASP Core Rule Set](https://coreruleset.org)
-plugins for delivery to a Web Application Firewall as a Kubernetes
-[image volume](https://kubernetes.io/docs/concepts/storage/volumes/#image). The
-image carries plugin files only; the WAF runtime activates the ones it references
-by `Include` directive. Delivery is bundled, activation is on demand.
+plugins as plain files, ready to deliver to a Web Application Firewall. The image
+carries plugin files only; the WAF runtime activates the ones it references by
+`Include` directive. Delivery is bundled, activation is on demand.
+
+The same payload reaches the WAF through whichever path fits your platform:
+
+- **Kubernetes image volume**: mount the image directly, no copy step.
+- **Custom WAF image**: bake the files into your Envoy/Coraza image at build time
+  with a multi-stage `COPY --from`.
+
+A `manifest.json` and a `tar.gz` of the same payload are also attached to every
+GitHub Release for registry-free consumption.
 
 It pairs naturally with the
 [`coraza-envoy-go-filter`](https://github.com/united-security-providers/coraza-envoy-go-filter)
 ("Coraza Web Application Firewall implemented as Envoy Go Filter"), which embeds
 CRS in the compiled filter and loads additional plugin rules from the filesystem.
-Mount this image, point the filter's directives at the mount path, and the plugins
-are available without rebuilding the filter.
+Point the filter's directives at wherever the files land, and the plugins are
+available without rebuilding the filter.
 
 ## Highlights
 
@@ -33,14 +41,19 @@ are available without rebuilding the filter.
   only when those inputs actually change.
 - **Supply-chain ready.** Images are signed with [cosign](https://www.sigstore.dev)
   (keyless OIDC) and carry a [SLSA](https://slsa.dev) build-provenance attestation.
-- **Two delivery paths.** Pull from GHCR, or fetch the `manifest.json` and
-  `tar.gz` attached to each GitHub Release when a registry is not reachable.
+- **Flexible delivery.** Mount as a Kubernetes image volume, or bake into your own
+  WAF image with `COPY --from`. A `manifest.json` and `tar.gz` are also attached to
+  each GitHub Release for registry-free consumption.
 
-## Quick start
+## Getting the files onto the WAF
 
-The image is consumed as a Kubernetes image volume. The example below mounts it
-into an Envoy pod running the Coraza filter and wires the plugin files into the
-WAF directive chain.
+Pick the delivery method that fits your platform. All three land the same
+`<plugin>/<files>` tree at a path the filter can `Include`.
+
+### Option A: Kubernetes image volume
+
+Mounts the image directly. Requires the `ImageVolume` feature (see
+[Requirements](#requirements)).
 
 ```yaml
 # Pod spec: image volume + the container's mount
@@ -55,6 +68,28 @@ spec:
       image:
         reference: ghcr.io/aslafy-z/coreruleset-plugins:latest   # or pin :2026.06.0
 ```
+
+### Option B: Custom WAF image
+
+Bake the plugins into your own Envoy/Coraza image at build time. Because this image
+is `FROM scratch`, `COPY --from` pulls its entire root with no shell or copy tooling
+involved, and the plugins ship inside your image with nothing to mount at runtime.
+
+```dockerfile
+# Pin a specific version for reproducible builds.
+FROM ghcr.io/aslafy-z/coreruleset-plugins:2026.06.0 AS plugins
+
+FROM your-registry/envoy-coraza:latest
+COPY --from=plugins / /etc/crs/plugins/
+```
+
+Pinning to a tag (rather than `:latest`) keeps the build reproducible; Renovate's
+default `docker` versioning will open update PRs as new versions publish.
+
+## Wiring the plugins into the filter
+
+Once the files are at the mount path, reference them from the filter's directives.
+This example targets the Coraza Envoy filter.
 
 ```yaml
 # Coraza filter directives (Envoy plugin_config TypedStruct)
@@ -95,8 +130,8 @@ runtime:
 
 | Kubernetes | `ImageVolume` state | Action |
 | --- | --- | --- |
-| v1.31 – v1.32 | Alpha (off) | Enable the feature gate |
-| v1.33 – v1.34 | Beta (off by default) | Enable the feature gate |
+| v1.31 to v1.32 | Alpha (off) | Enable the feature gate |
+| v1.33 to v1.34 | Beta (off by default) | Enable the feature gate |
 | v1.35 | Beta (on by default) | None |
 | v1.36+ | Stable | None |
 
@@ -105,7 +140,7 @@ Container runtime: containerd 2.0+ or CRI-O 1.31+.
 ## Image layout
 
 ```
-/                              # image root (mount target)
+/                              # image root / tarball root
 ├── manifest.json              # generated build record
 ├── nextcloud/                 # one directory per plugin
 │   ├── nextcloud-config.conf
@@ -117,9 +152,9 @@ Container runtime: containerd 2.0+ or CRI-O 1.31+.
 
 Each plugin's files live under a dedicated directory, so filenames never collide.
 The directory name defaults to the repository basename with the `-plugin` and
-`-rule-exclusions` suffixes stripped (overridable per entry). Mounting the root
-at `/etc/crs/plugins` exposes `/etc/crs/plugins/<plugin>/<files>` with no doubled
-path segment.
+`-rule-exclusions` suffixes stripped (overridable per entry). Placing the root at
+`/etc/crs/plugins` (by mount or extraction) exposes
+`/etc/crs/plugins/<plugin>/<files>` with no doubled path segment.
 
 ## Verifying provenance
 
