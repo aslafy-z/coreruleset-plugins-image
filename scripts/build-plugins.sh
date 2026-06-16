@@ -40,6 +40,7 @@ while IFS= read -r entry; do
   dest="${STAGING}/${dir}"
   [ -d "$dest" ] && die "duplicate staging dir: ${dir} (set a dir override)"
 
+  log "staging ${repo}@${sha:0:7} -> ${dir}"
   tar_tmp="$(mktemp)"
   curl -fsSL ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} \
     "https://api.github.com/repos/${repo}/tarball/${sha}" -o "$tar_tmp" \
