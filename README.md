@@ -67,20 +67,26 @@ plugin_config:
           - "Include @coraza-setup"
           - "SecRuleEngine On"
           - "Include @crs-setup"
-          # Plugin config + before-rules from the mounted volume, BEFORE core rules:
-          - "Include /etc/crs/plugins/*/*-config.conf"
-          - "Include /etc/crs/plugins/*/*-before.conf"
+          # Activate only the plugins you need, by name, BEFORE core rules:
+          - "Include /etc/crs/plugins/wordpress/*-config.conf"
+          - "Include /etc/crs/plugins/wordpress/*-before.conf"
+          - "Include /etc/crs/plugins/nextcloud/*-config.conf"
+          - "Include /etc/crs/plugins/nextcloud/*-before.conf"
           - "Include @owasp_crs/*.conf"
-          # Plugin after-rules, AFTER core rules:
-          - "Include /etc/crs/plugins/*/*-after.conf"
+          # The same plugins' after-rules, AFTER core rules:
+          - "Include /etc/crs/plugins/wordpress/*-after.conf"
+          - "Include /etc/crs/plugins/nextcloud/*-after.conf"
     default_directive: "waf1"
 ```
 
-> **Ordering is load-bearing.** `-config` and `-before` files must load *before*
-> `@owasp_crs/*.conf`, and `-after` files *after* it. A single `*/*.conf` glob
-> breaks this, so the includes are split around the core rules. The `@` prefix
-> marks resources embedded in the filter; plain filesystem paths reference the
-> mounted volume.
+> **Activation is per plugin.** The volume delivers every bundled plugin, but the
+> filter loads only the directories you reference, so include the specific plugins
+> you want rather than a `*/*` glob over all of them.
+>
+> **Ordering is load-bearing.** A plugin's `-config` and `-before` files must load
+> *before* `@owasp_crs/*.conf`, and its `-after` files *after* it, so the includes
+> are split around the core rules. The `@` prefix marks resources embedded in the
+> filter; plain filesystem paths reference the mounted volume.
 
 ### Requirements
 
