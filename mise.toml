@@ -1,0 +1,14 @@
+[tools]
+yq = "4.44.3"
+jq = "1.7.1"
+shellcheck = "0.10.0"
+cosign = "2.4.1"
+"go:github.com/google/go-containerregistry/cmd/crane" = "latest"
+
+[tasks.lint]
+description = "Shellcheck all scripts"
+run = "shellcheck scripts/*.sh"
+
+[tasks.build]
+description = "Stage plugins and build manifest without pushing"
+run = "scripts/build-plugins.sh --dry-run"
