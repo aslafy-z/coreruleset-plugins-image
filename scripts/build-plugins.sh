@@ -46,8 +46,13 @@ while IFS= read -r entry; do
     || die "download failed for ${repo}@${sha}"
   archive_sha="$(sha256sum "$tar_tmp" | cut -d' ' -f1)"
 
-  tar -tzf "$tar_tmp" | grep -qE '(^|/)plugins/' \
+  # List once to a file: piping `tar | grep -q` lets grep close the pipe early,
+  # killing tar with SIGPIPE, which pipefail then surfaces as a false failure.
+  list_tmp="$(mktemp)"
+  tar -tzf "$tar_tmp" >"$list_tmp"
+  grep -qE '(^|/)plugins/' "$list_tmp" \
     || die "archive for ${repo} has no plugins/ directory"
+  rm -f "$list_tmp"
   mkdir -p "$dest"
   tar -C "$dest" -xzf "$tar_tmp" --wildcards --strip-components=2 '*/plugins/*' 2>/dev/null
   rm -f "$tar_tmp"
@@ -77,7 +82,7 @@ jq -n --arg crs "$CRS_COMPAT" --arg commit "$COMMIT" --arg generated "$GENERATED
 norm="$(yq -o=json '{
   "crs_compatibility": .crs_compatibility,
   "plugins": [ .plugins[] | select(.disabled != true)
-    | {dir:.dir, origin:.origin, commit_sha:.resolved.commit_sha, version:.resolved.version} ]
+    | {"dir": .dir, "origin": .origin, "commit_sha": .resolved.commit_sha, "version": .resolved.version} ]
 }' "$PLUGINS_FILE" | jq -S -c .)"
 
 digest="$( {
