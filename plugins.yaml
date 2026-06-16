@@ -3,15 +3,237 @@
 # nightly sync job via PR, so committed SHAs are always reviewed before build.
 crs_compatibility: "4.x"
 plugins:
+  - repo: EsadCetiner/iredadmin-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.1
+      ref_type: tag
+      commit_sha: d8a982f44b2b45c690af6850ac6126b6cf8acbcb
+  - repo: EsadCetiner/plausible-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 67d5d64a8059854759824140321195fae5187c5b
+  - repo: EsadCetiner/roundcube-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.4
+      ref_type: tag
+      commit_sha: ed736353c6ab1cde172be0e9375c20b06b6c16cb
+  - repo: EsadCetiner/sogo-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.4
+      ref_type: tag
+      commit_sha: 4d0f073efe66dd506f79318d45b35705f9a173fb
+  - repo: coreruleset/antivirus-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: e6b53a7
+      ref_type: sha
+      commit_sha: e6b53a7315c8c5128d6b75b8b025df7100e909be
+  - repo: coreruleset/auto-decoding-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 5d096ad
+      ref_type: sha
+      commit_sha: 5d096ad94a4f5a30803cec6d087a425b8b8930ec
+  - repo: coreruleset/body-decompress-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 80e7d9b
+      ref_type: sha
+      commit_sha: 80e7d9b5d1d89fe5eaccdc5cba1fbe174efc0e44
+  - repo: coreruleset/cpanel-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 2fd1cab8706c760fe9cdccf55afe75b94a66f89f
+  - repo: coreruleset/database-logging-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1f6ea17
+      ref_type: sha
+      commit_sha: 1f6ea17e92598ba0e18d3b1a49f3eb2be0c451a5
+  - repo: coreruleset/dokuwiki-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 00996762a746ecfe85d6ccc022f2a3efb44377a7
+  - repo: coreruleset/dos-protection-plugin-modsecurity
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 98962f1
+      ref_type: sha
+      commit_sha: 98962f1f9c775f2797c0b320391f8616c7503469
+  - repo: coreruleset/drupal-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 6771319cf184690d33d3251e3dac76e39c54c7f6
+  - repo: coreruleset/fake-bot-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.1.0
+      ref_type: tag
+      commit_sha: e7c675e12c6edd63d9a35dfba12b672e9f3abb08
+  - repo: coreruleset/false-positive-report-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: b33cfa3
+      ref_type: sha
+      commit_sha: b33cfa374e9563a4bc46b9747374ed79d2b0ae81
+  - repo: coreruleset/google-oauth2-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 4434424ee9dd918c8e13d6443b08bb53760b143d
+  - repo: coreruleset/incubator-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: b87b1d2
+      ref_type: sha
+      commit_sha: b87b1d2209b7d480afa8c1d3be20a132585c6bc3
   - repo: coreruleset/nextcloud-rule-exclusions-plugin
-    origin: registry        # registry | manual
-    pin: null               # optional tag/sha to freeze a version
-    dir: null               # optional staging-dir override
-    disabled: false         # explicit opt-out; the only way to omit an entry
-    resolved: null          # filled by the sync job
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.6.0
+      ref_type: tag
+      commit_sha: 83ab69fded7400d5f37427e4baa02c8a1ca3c722
+  - repo: coreruleset/phpbb-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 5f1e03417cd73f1a5f22040bf06680e86e49d71e
+  - repo: coreruleset/phpmyadmin-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.1.0
+      ref_type: tag
+      commit_sha: 6629e888b9f9fee9ae8288a335233e2f37a5c0a5
+  - repo: coreruleset/referer-hardening-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: f3220b2
+      ref_type: sha
+      commit_sha: f3220b2fe7b2f5e1f9eefcf8041f4843ad0f89e0
+  - repo: coreruleset/template-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 79a4ec5
+      ref_type: sha
+      commit_sha: 79a4ec5381a616340ee1749dcb41324bfb59c9aa
+  - repo: coreruleset/traffic-observation-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 2cde930
+      ref_type: sha
+      commit_sha: 2cde93006d28e04b0a85ce94a3eae18e4020f243
+  - repo: coreruleset/wordpress-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.2.0
+      ref_type: tag
+      commit_sha: 161bb90bb0d543f805fc6cd966a7c53a2e5b08de
+  - repo: coreruleset/xenforo-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 193288ac2faa8ccbc4d86cdf829047f477812f28
   - repo: eilandert/wordpress-hardening-plugin
     origin: registry
     pin: null
     dir: null
     disabled: false
-    resolved: null
+    resolved:
+      version: 1.1.2
+      ref_type: tag
+      commit_sha: 2e2c2a5334fa519bdb74f246a95a3262631d546c
+  - repo: netnea/netnea-crs-upgrading-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 665bb12
+      ref_type: sha
+      commit_sha: 665bb12c21519d7a91610f6ccfbb0743ae4826b2
