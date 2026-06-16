@@ -53,7 +53,7 @@ jobs:
           # Prior digest from :latest. 404 -> bootstrap; transient -> fail loud.
           prior="BOOTSTRAP"
           if crane export "${IMAGE}:latest" - >latest.tar 2>err.txt; then
-            prior="$(tar -xO -f latest.tar ./manifest.json | jq -r .build_digest)"
+            prior="$(tar -xO -f latest.tar manifest.json | jq -r .build_digest)"
           elif grep -qiE 'MANIFEST_UNKNOWN|NAME_UNKNOWN|not found|404' err.txt; then
             prior="BOOTSTRAP"
           else
@@ -63,7 +63,7 @@ jobs:
           if [ "$prior" != "BOOTSTRAP" ] && [ "$new_digest" = "$prior" ]; then
             # Digest matches: noop unless a side effect is missing (repair).
             # Side-effect probe: does the release for the recorded version exist?
-            prev_version="$(tar -xO -f latest.tar ./manifest.json | jq -r .version)"
+            prev_version="$(tar -xO -f latest.tar manifest.json | jq -r .version)"
             if gh release view "$prev_version" >/dev/null 2>&1; then
               echo "decision=noop" >>"$GITHUB_OUTPUT"; exit 0
             fi
@@ -118,7 +118,7 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           prev=""
-          if crane export "${IMAGE}:latest" - 2>/dev/null | tar -xO ./manifest.json >dist/prev.json 2>/dev/null; then
+          if crane export "${IMAGE}:latest" - 2>/dev/null | tar -xO manifest.json >dist/prev.json 2>/dev/null; then
             prev="dist/prev.json"
           fi
           PREV_MANIFEST="$prev" RELEASE_OUT=dist/release-notes.md scripts/render-docs.sh manifest.json
