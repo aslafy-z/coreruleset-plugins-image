@@ -1,0 +1,17 @@
+# Source of truth for the bundled CRS plugins.
+# Curated fields are human-edited; the `resolved` block is written by the
+# nightly sync job via PR, so committed SHAs are always reviewed before build.
+crs_compatibility: "4.x"
+plugins:
+  - repo: coreruleset/nextcloud-rule-exclusions-plugin
+    origin: registry        # registry | manual
+    pin: null               # optional tag/sha to freeze a version
+    dir: null               # optional staging-dir override
+    disabled: false         # explicit opt-out; the only way to omit an entry
+    resolved: null          # filled by the sync job
+  - repo: eilandert/wordpress-hardening-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved: null
