@@ -1,0 +1,32 @@
+name: sync-plugins
+
+on:
+  schedule:
+    - cron: "0 4 * * *"   # nightly at 04:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: Resolve registry and versions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: scripts/sync-plugins.sh
+      - name: Open PR with changes
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: sync/plugins
+          title: "chore(sync): plugin registry + version bumps"
+          commit-message: "chore(sync): update plugin registry and resolved versions"
+          body: |
+            Automated registry reconciliation and version resolution.
+            Review registry add/remove (including trust) and rule-content
+            changes before merge. Never auto-merge.
+          add-paths: plugins.yaml
