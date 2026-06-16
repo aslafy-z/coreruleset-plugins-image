@@ -1,6 +1,40 @@
 # Source of truth for the bundled CRS plugins.
-# Curated fields are human-edited; the `resolved` block is written by the
-# nightly sync job via PR, so committed SHAs are always reviewed before build.
+#
+# Curated fields are human-edited. The `resolved` block is written by the nightly
+# sync job (scripts/sync-plugins.sh) and proposed via PR, so every committed SHA is
+# reviewed before it can be built and published.
+#
+# Structure
+# ---------
+# crs_compatibility: CRS major line these plugins target. Copied verbatim into
+#                    manifest.json and part of the build-input digest, so changing
+#                    it triggers a republish.
+#
+# plugins: list of entries. Each entry has:
+#   repo:     "owner/name" GitHub slug. Required. (curated)
+#   origin:   "registry" | "manual". (curated)
+#               registry -> the sync job adds/removes this entry to match the
+#                           official CRS plugin registry.
+#               manual   -> never auto-added or auto-removed; versions are still
+#                           resolved and bumped. Use for plugins not in the registry.
+#   pin:      null, or a tag/commit SHA to freeze the version. When set, sync uses
+#             it as-is instead of resolving the latest release. (curated)
+#   dir:      null, or a staging-directory name override. Default is the repo
+#             basename with the "-plugin" and "-rule-exclusions" suffixes stripped.
+#             Set this to resolve a collision when two repos map to the same dir. (curated)
+#   disabled: true | false. The only way to omit a curated plugin from the image;
+#             a disabled entry is kept in this file but skipped by build and sync. (curated)
+#   resolved: written by the sync job, do not hand-edit. Holds:
+#               version:    human-readable label (release tag, or short SHA).
+#               ref_type:   "tag" | "sha".
+#               commit_sha: full 40-char commit the build downloads (the content pin).
+#
+# Common edits
+# ------------
+#   Add a plugin not in the registry:  append an entry with origin: manual.
+#   Temporarily drop a plugin:          set disabled: true (keep the entry).
+#   Freeze a version:                   set pin to a tag or SHA.
+#   Fix a directory-name clash:         set dir to a unique name.
 crs_compatibility: "4.x"
 plugins:
   - repo: EsadCetiner/iredadmin-rule-exclusions-plugin
