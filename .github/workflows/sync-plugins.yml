@@ -19,6 +19,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: scripts/sync-plugins.sh
       - name: Open PR with changes
+        id: open_pr
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -30,3 +32,7 @@ jobs:
             Review registry add/remove (including trust) and rule-content
             changes before merge. Never auto-merge.
           add-paths: plugins.yaml
+      - name: Warn when PR creation is blocked
+        if: ${{ steps.open_pr.outcome == 'failure' }}
+        run: |
+          echo "::warning::create-pull-request failed. Ensure repository setting 'Allow GitHub Actions to create and approve pull requests' is enabled."
