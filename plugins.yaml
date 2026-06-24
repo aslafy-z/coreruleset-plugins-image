@@ -268,6 +268,6 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 665bb12
+      version: 0745d5e
       ref_type: sha
-      commit_sha: 665bb12c21519d7a91610f6ccfbb0743ae4826b2
+      commit_sha: 0745d5ecfba982a6656fb5481f773c356950d0b6
