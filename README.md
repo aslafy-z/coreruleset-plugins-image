@@ -75,7 +75,7 @@ available without rebuilding the filter.
 | [coreruleset/wordpress-rule-exclusions-plugin](https://github.com/coreruleset/wordpress-rule-exclusions-plugin) | 1.2.0 | registry | `161bb90` |
 | [coreruleset/xenforo-rule-exclusions-plugin](https://github.com/coreruleset/xenforo-rule-exclusions-plugin) | 1.0.0 | registry | `193288a` |
 | [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.1.2 | registry | `2e2c2a5` |
-| [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 665bb12 | registry | `665bb12` |
+| [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 0745d5e | registry | `0745d5e` |
 <!-- END BUNDLED PLUGINS -->
 
 ## Getting the files onto the WAF
