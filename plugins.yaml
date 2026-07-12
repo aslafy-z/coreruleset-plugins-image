@@ -271,3 +271,12 @@ plugins:
       version: 0745d5e
       ref_type: sha
       commit_sha: 0745d5ecfba982a6656fb5481f773c356950d0b6
+  - repo: eilandert/vimbadmin-crs-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 11f57ca
+      ref_type: sha
+      commit_sha: 11f57ca1afaba60b9ca42a1578b171ea8d4d3a78
