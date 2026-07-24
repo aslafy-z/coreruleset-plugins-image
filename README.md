@@ -79,6 +79,7 @@ available without rebuilding the filter.
 | [coreruleset/xenforo-rule-exclusions-plugin](https://github.com/coreruleset/xenforo-rule-exclusions-plugin) | 1.0.0 | registry | `193288a` |
 | [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.1.2 | registry | `2e2c2a5` |
 | [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 0745d5e | registry | `0745d5e` |
+| [eilandert/vimbadmin-crs-plugin](https://github.com/eilandert/vimbadmin-crs-plugin) | 11f57ca | registry | `11f57ca` |
 <!-- END BUNDLED PLUGINS -->
 
 ## Getting the files onto the WAF
