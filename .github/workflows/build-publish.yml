@@ -51,8 +51,10 @@ jobs:
           new_digest="$(jq -r .build_digest staging/manifest.json)"
 
           # Prior digest from :latest. 404 -> bootstrap; transient -> fail loud.
+          # The payload is identical on every platform, so any one of them
+          # answers the question; name it rather than lean on crane's default.
           prior="BOOTSTRAP"
-          if crane export "${IMAGE}:latest" - >latest.tar 2>err.txt; then
+          if crane export --platform linux/amd64 "${IMAGE}:latest" - >latest.tar 2>err.txt; then
             prior="$(tar -xO -f latest.tar manifest.json | jq -r .build_digest)"
           elif grep -qiE 'MANIFEST_UNKNOWN|NAME_UNKNOWN|not found|404' err.txt; then
             prior="BOOTSTRAP"
@@ -98,9 +100,13 @@ jobs:
           version="${{ steps.gate.outputs.version }}"
           tmp="$(mktemp)"; jq --arg v "$version" '.version=$v' staging/manifest.json >"$tmp"
           mv "$tmp" staging/manifest.json; cp staging/manifest.json manifest.json
-          docker buildx build --platform linux/amd64 \
+          platforms="$(jq -r '.platforms | join(",")' manifest.json)"
+          docker buildx build --platform "$platforms" \
+            --metadata-file metadata.json \
             -t "${IMAGE}:${version}" -t "${IMAGE}:latest" --push .
-          digest="$(crane digest "${IMAGE}:${version}")"
+          # Sign and attest the index, not one of the per-platform manifests it
+          # points at, so a consumer verifying the tag verifies what it resolves.
+          digest="$(jq -r '."containerimage.digest"' metadata.json)"
           cosign sign --yes "${IMAGE}@${digest}"
           echo "digest=${digest}" >>"$GITHUB_OUTPUT"
 
@@ -118,7 +124,7 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           prev=""
-          if crane export "${IMAGE}:latest" - 2>/dev/null | tar -xO manifest.json >dist/prev.json 2>/dev/null; then
+          if crane export --platform linux/amd64 "${IMAGE}:latest" - 2>/dev/null | tar -xO manifest.json >dist/prev.json 2>/dev/null; then
             prev="dist/prev.json"
           fi
           PREV_MANIFEST="$prev" RELEASE_OUT=dist/release-notes.md scripts/render-docs.sh manifest.json
