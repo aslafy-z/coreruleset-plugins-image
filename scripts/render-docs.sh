@@ -46,7 +46,9 @@ crs="$(jq -r .crs_compatibility "$MANIFEST")"
           | "- added \(.repo)@\(.version)" ] ) +
       ( [ $c[] as $p | ($o[] | select(.repo == $p.repo)) as $q
           | select($p.version != $q.version)
-          | "- \($p.dir) \($q.version) -> \($p.version)" ] ) | .[]'
+          | "- \($p.dir) \($q.version) -> \($p.version)" ] ) +
+      ( [ $o[] | select(.repo as $r | ($c | map(.repo) | index($r)) | not)
+          | "- removed \(.repo)@\(.version)" ] ) | .[]'
   else
     jq -r '.plugins[] | "- added \(.repo)@\(.version)"' "$MANIFEST"
   fi
