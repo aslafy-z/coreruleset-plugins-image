@@ -44,6 +44,9 @@ available without rebuilding the filter.
 - **Flexible delivery.** Mount as a Kubernetes image volume, or bake into your own
   WAF image with `COPY --from`. A `manifest.json` and `tar.gz` are also attached to
   each GitHub Release for registry-free consumption.
+- **Multi-platform.** Published for `linux/amd64` and `linux/arm64`. The payload is
+  identical on both; the index exists so arm64 nodes can pull it at all. The
+  platform list is recorded in `manifest.json` under `platforms`.
 
 ## Bundled plugins
 
@@ -104,6 +107,10 @@ spec:
 Image volumes need the `ImageVolume` feature gate (alpha in v1.31, beta and on by
 default from v1.35, stable in v1.36) and a runtime that supports it (containerd
 2.0+, CRI-O 1.31+). On v1.31 to v1.34 enable the gate explicitly.
+
+The kubelet pulls an image volume for the node's own platform, so mixed-architecture
+clusters need every architecture in the index. Both `linux/amd64` and `linux/arm64`
+are published.
 
 ### Option B: Custom WAF image
 

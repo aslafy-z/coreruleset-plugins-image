@@ -13,6 +13,11 @@ STAGING="${STAGING:-staging}"
 MANIFEST="${MANIFEST:-manifest.json}"
 GITHUB_API="${GITHUB_API:-https://api.github.com}"
 
+# Platforms the image index is published for. The payload is plain files and
+# carries no architecture, but consumers select by platform: a Kubernetes image
+# volume on an arm64 node fails to pull an index that only lists amd64.
+PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
+
 CRS_COMPAT="$(yq '.crs_compatibility' "$PLUGINS_FILE")"
 COMMIT="${GITHUB_SHA:-$(git rev-parse HEAD 2>/dev/null || echo unknown)}"
 GENERATED="${GENERATED_AT:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
@@ -74,12 +79,14 @@ done < <(yq -o=json -I=0 '.plugins[] | select(.disabled != true)' "$PLUGINS_FILE
 
 # Generate manifest (version + build_digest filled below / at publish).
 jq -n --arg crs "$CRS_COMPAT" --arg commit "$COMMIT" --arg generated "$GENERATED" \
-  --argjson plugins "$records" \
+  --arg platforms "$PLATFORMS" --argjson plugins "$records" \
   '{version:"", crs_compatibility:$crs, generated:$generated, commit:$commit,
-    build_digest:"", plugins:$plugins}' >"$MANIFEST"
+    platforms:($platforms | split(",")), build_digest:"", plugins:$plugins}' >"$MANIFEST"
 
 # Build-input digest: sorted staged paths+hashes (excluding manifest.json),
-# Dockerfile, payload scripts, and normalized manifest-relevant plugins.yaml.
+# Dockerfile, payload scripts, normalized manifest-relevant plugins.yaml, and
+# the target platforms. The publish gate republishes only when this digest
+# moves, so anything that changes the pushed index has to feed into it.
 norm="$(yq -o=json '{
   "crs_compatibility": .crs_compatibility,
   "plugins": [ .plugins[] | select(.disabled != true)
@@ -91,6 +98,7 @@ digest="$( {
     | while IFS= read -r f; do printf '%s  %s\n' "$f" "$(sha256sum "$f" | cut -d' ' -f1)"; done )
   sha256sum Dockerfile scripts/build-plugins.sh scripts/pack-artifacts.sh | cut -d' ' -f1
   printf '%s\n' "$norm"
+  printf '%s\n' "$PLATFORMS"
 } | sha256sum | cut -d' ' -f1 )"
 
 tmp="$(mktemp)"
@@ -98,5 +106,5 @@ jq --arg d "sha256:${digest}" '.build_digest = $d' "$MANIFEST" >"$tmp"
 mv "$tmp" "$MANIFEST"
 cp "$MANIFEST" "${STAGING}/manifest.json"
 
-log "staged ${total_files} files; build_digest sha256:${digest}"
+log "staged ${total_files} files for ${PLATFORMS}; build_digest sha256:${digest}"
 log "staging complete"
