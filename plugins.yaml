@@ -187,9 +187,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.6.0
+      version: 1.7.1
       ref_type: tag
-      commit_sha: 83ab69fded7400d5f37427e4baa02c8a1ca3c722
+      commit_sha: d907a20c7ca9c27d5666185c8ffab58f859d4832
   - repo: coreruleset/phpbb-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -214,18 +214,18 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: f3220b2
+      version: 431c124
       ref_type: sha
-      commit_sha: f3220b2fe7b2f5e1f9eefcf8041f4843ad0f89e0
+      commit_sha: 431c124c3384e73120a570e5a53aee2511ac418a
   - repo: coreruleset/template-plugin
     origin: registry
     pin: null
     dir: null
     disabled: false
     resolved:
-      version: 79a4ec5
+      version: fd3542b
       ref_type: sha
-      commit_sha: 79a4ec5381a616340ee1749dcb41324bfb59c9aa
+      commit_sha: fd3542bd583ba11de432cb7613fa7cf047dce821
   - repo: coreruleset/traffic-observation-plugin
     origin: registry
     pin: null
@@ -277,6 +277,6 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 11f57ca
+      version: 0d2192b
       ref_type: sha
-      commit_sha: 11f57ca1afaba60b9ca42a1578b171ea8d4d3a78
+      commit_sha: 0d2192bfe2f17342b82217abc8aeaae4e91a3740
