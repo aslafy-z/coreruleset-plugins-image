@@ -69,17 +69,17 @@ available without rebuilding the filter.
 | [coreruleset/false-positive-report-plugin](https://github.com/coreruleset/false-positive-report-plugin) | b33cfa3 | registry | `b33cfa3` |
 | [coreruleset/google-oauth2-plugin](https://github.com/coreruleset/google-oauth2-plugin) | 1.0.0 | registry | `4434424` |
 | [coreruleset/incubator-plugin](https://github.com/coreruleset/incubator-plugin) | b87b1d2 | registry | `b87b1d2` |
-| [coreruleset/nextcloud-rule-exclusions-plugin](https://github.com/coreruleset/nextcloud-rule-exclusions-plugin) | 1.6.0 | registry | `83ab69f` |
+| [coreruleset/nextcloud-rule-exclusions-plugin](https://github.com/coreruleset/nextcloud-rule-exclusions-plugin) | 1.7.1 | registry | `d907a20` |
 | [coreruleset/phpbb-rule-exclusions-plugin](https://github.com/coreruleset/phpbb-rule-exclusions-plugin) | 1.0.0 | registry | `5f1e034` |
 | [coreruleset/phpmyadmin-rule-exclusions-plugin](https://github.com/coreruleset/phpmyadmin-rule-exclusions-plugin) | 1.1.0 | registry | `6629e88` |
-| [coreruleset/referer-hardening-plugin](https://github.com/coreruleset/referer-hardening-plugin) | f3220b2 | registry | `f3220b2` |
-| [coreruleset/template-plugin](https://github.com/coreruleset/template-plugin) | 79a4ec5 | registry | `79a4ec5` |
+| [coreruleset/referer-hardening-plugin](https://github.com/coreruleset/referer-hardening-plugin) | 431c124 | registry | `431c124` |
+| [coreruleset/template-plugin](https://github.com/coreruleset/template-plugin) | fd3542b | registry | `fd3542b` |
 | [coreruleset/traffic-observation-plugin](https://github.com/coreruleset/traffic-observation-plugin) | 2cde930 | registry | `2cde930` |
 | [coreruleset/wordpress-rule-exclusions-plugin](https://github.com/coreruleset/wordpress-rule-exclusions-plugin) | 1.2.0 | registry | `161bb90` |
 | [coreruleset/xenforo-rule-exclusions-plugin](https://github.com/coreruleset/xenforo-rule-exclusions-plugin) | 1.0.0 | registry | `193288a` |
 | [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.1.2 | registry | `2e2c2a5` |
 | [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 0745d5e | registry | `0745d5e` |
-| [eilandert/vimbadmin-crs-plugin](https://github.com/eilandert/vimbadmin-crs-plugin) | 11f57ca | registry | `11f57ca` |
+| [eilandert/vimbadmin-crs-plugin](https://github.com/eilandert/vimbadmin-crs-plugin) | 0d2192b | registry | `0d2192b` |
 <!-- END BUNDLED PLUGINS -->
 
 ## Getting the files onto the WAF
