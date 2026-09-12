@@ -34,6 +34,7 @@ while IFS= read -r entry; do
   ver="$(jq -r '.resolved.version // ""' <<<"$entry")"
   rtype="$(jq -r '.resolved.ref_type // ""' <<<"$entry")"
   origin="$(jq -r '.origin // "registry"' <<<"$entry")"
+  registry="$(jq -c '.registry // null' <<<"$entry")"
 
   [ -n "$sha" ] || die "entry ${repo} has no resolved commit_sha (fail closed)"
 
@@ -71,8 +72,10 @@ while IFS= read -r entry; do
   records="$(jq -n --argjson acc "$records" \
     --arg repo "$repo" --arg dir "$dir" --arg version "$ver" --arg rtype "$rtype" \
     --arg sha "$sha" --arg asha "$archive_sha" --argjson files "$files_json" --arg origin "$origin" \
+    --argjson registry "$registry" \
     '$acc + [{repo:$repo, dir:$dir, version:$version, ref_type:$rtype,
-              commit_sha:$sha, archive_sha256:$asha, files:$files, origin:$origin}]')"
+              commit_sha:$sha, archive_sha256:$asha, files:$files, origin:$origin,
+              registry:$registry}]')"
 done < <(yq -o=json -I=0 '.plugins[] | select(.disabled != true)' "$PLUGINS_FILE")
 
 [ "$total_files" -gt 0 ] || die "no files staged from any plugin (refusing empty image)"
@@ -90,7 +93,8 @@ jq -n --arg crs "$CRS_COMPAT" --arg commit "$COMMIT" --arg generated "$GENERATED
 norm="$(yq -o=json '{
   "crs_compatibility": .crs_compatibility,
   "plugins": [ .plugins[] | select(.disabled != true)
-    | {"dir": .dir, "origin": .origin, "commit_sha": .resolved.commit_sha, "version": .resolved.version} ]
+    | {"dir": .dir, "origin": .origin, "commit_sha": .resolved.commit_sha, "version": .resolved.version,
+       "registry": .registry} ]
 }' "$PLUGINS_FILE" | jq -S -c .)"
 
 digest="$( {

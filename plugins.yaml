@@ -1,8 +1,9 @@
 # Source of truth for the bundled CRS plugins.
 #
-# Curated fields are human-edited. The `resolved` block is written by the nightly
-# sync job (scripts/sync-plugins.sh) and proposed via PR, so every committed SHA is
-# reviewed before it can be built and published.
+# Curated fields are human-edited. The `resolved` and `registry` blocks are written
+# by the nightly sync job (scripts/sync-plugins.sh) and proposed via PR, so every
+# committed SHA and every registry status change is reviewed before it can be
+# built and published.
 #
 # Structure
 # ---------
@@ -28,6 +29,10 @@
 #               version:    human-readable label (release tag, or short SHA).
 #               ref_type:   "tag" | "sha".
 #               commit_sha: full 40-char commit the build downloads (the content pin).
+#   registry: written by the sync job for origin: registry entries, do not
+#             hand-edit. The vetting metadata the CRS registry attests for this
+#             plugin (name, type, status, license, rule_id_range), copied into
+#             manifest.json at build time. Absent on manual entries.
 #
 # Common edits
 # ------------
@@ -46,6 +51,14 @@ plugins:
       version: 1.0.1
       ref_type: tag
       commit_sha: d8a982f44b2b45c690af6850ac6126b6cf8acbcb
+    registry:
+      name: iredadmin-rule-exclusions-plugin
+      type: 3rd-party
+      status: tested
+      license: GPL-2.0
+      rule_id_range:
+        start: 9521000
+        end: 9521999
   - repo: EsadCetiner/plausible-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -55,6 +68,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 67d5d64a8059854759824140321195fae5187c5b
+    registry:
+      name: plausible-rule-exclusions-plugin
+      type: 3rd-party
+      status: tested
+      license: GPL-2.0
+      rule_id_range:
+        start: 9528000
+        end: 9528999
   - repo: EsadCetiner/roundcube-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -64,6 +85,14 @@ plugins:
       version: 1.0.4
       ref_type: tag
       commit_sha: ed736353c6ab1cde172be0e9375c20b06b6c16cb
+    registry:
+      name: roundcube-rule-exclusions-plugin
+      type: 3rd-party
+      status: tested
+      license: GPL-2.0
+      rule_id_range:
+        start: 9519000
+        end: 9519999
   - repo: EsadCetiner/sogo-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -73,6 +102,14 @@ plugins:
       version: 1.0.4
       ref_type: tag
       commit_sha: 4d0f073efe66dd506f79318d45b35705f9a173fb
+    registry:
+      name: sogo-rule-exclusions-plugin
+      type: 3rd-party
+      status: tested
+      license: GPL-2.0
+      rule_id_range:
+        start: 9520000
+        end: 9520999
   - repo: coreruleset/antivirus-plugin
     origin: registry
     pin: null
@@ -82,6 +119,14 @@ plugins:
       version: e6b53a7
       ref_type: sha
       commit_sha: e6b53a7315c8c5128d6b75b8b025df7100e909be
+    registry:
+      name: antivirus
+      type: official
+      status: being-tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9502000
+        end: 9502999
   - repo: coreruleset/auto-decoding-plugin
     origin: registry
     pin: null
@@ -91,6 +136,14 @@ plugins:
       version: 5d096ad
       ref_type: sha
       commit_sha: 5d096ad94a4f5a30803cec6d087a425b8b8930ec
+    registry:
+      name: auto-decoding
+      type: official
+      status: untested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9501000
+        end: 9501999
   - repo: coreruleset/body-decompress-plugin
     origin: registry
     pin: null
@@ -100,6 +153,14 @@ plugins:
       version: 80e7d9b
       ref_type: sha
       commit_sha: 80e7d9b5d1d89fe5eaccdc5cba1fbe174efc0e44
+    registry:
+      name: body-decompress
+      type: official
+      status: being-tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9503000
+        end: 9503999
   - repo: coreruleset/cpanel-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -109,6 +170,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 2fd1cab8706c760fe9cdccf55afe75b94a66f89f
+    registry:
+      name: cpanel-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9510000
+        end: 9510999
   - repo: coreruleset/database-logging-plugin
     origin: registry
     pin: null
@@ -118,6 +187,14 @@ plugins:
       version: 1f6ea17
       ref_type: sha
       commit_sha: 1f6ea17e92598ba0e18d3b1a49f3eb2be0c451a5
+    registry:
+      name: database-logging-plugin
+      type: official
+      status: untested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9523000
+        end: 9523999
   - repo: coreruleset/dokuwiki-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -127,6 +204,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 00996762a746ecfe85d6ccc022f2a3efb44377a7
+    registry:
+      name: dokuwiki-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9509000
+        end: 9509999
   - repo: coreruleset/dos-protection-plugin-modsecurity
     origin: registry
     pin: null
@@ -136,6 +221,14 @@ plugins:
       version: 98962f1
       ref_type: sha
       commit_sha: 98962f1f9c775f2797c0b320391f8616c7503469
+    registry:
+      name: dos-protection-modsecurity
+      type: official
+      status: untested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9514000
+        end: 9514999
   - repo: coreruleset/drupal-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -145,6 +238,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 6771319cf184690d33d3251e3dac76e39c54c7f6
+    registry:
+      name: drupal-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9506000
+        end: 9506999
   - repo: coreruleset/fake-bot-plugin
     origin: registry
     pin: null
@@ -154,6 +255,14 @@ plugins:
       version: 1.1.0
       ref_type: tag
       commit_sha: e7c675e12c6edd63d9a35dfba12b672e9f3abb08
+    registry:
+      name: fake-bot
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9504000
+        end: 9504999
   - repo: coreruleset/false-positive-report-plugin
     origin: registry
     pin: null
@@ -163,6 +272,14 @@ plugins:
       version: b33cfa3
       ref_type: sha
       commit_sha: b33cfa374e9563a4bc46b9747374ed79d2b0ae81
+    registry:
+      name: false-positive-report-plugin
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9525000
+        end: 9525999
   - repo: coreruleset/google-oauth2-plugin
     origin: registry
     pin: null
@@ -172,6 +289,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 4434424ee9dd918c8e13d6443b08bb53760b143d
+    registry:
+      name: google-oauth2
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9505000
+        end: 9505999
   - repo: coreruleset/incubator-plugin
     origin: registry
     pin: null
@@ -181,6 +306,14 @@ plugins:
       version: b87b1d2
       ref_type: sha
       commit_sha: b87b1d2209b7d480afa8c1d3be20a132585c6bc3
+    registry:
+      name: incubator
+      type: official
+      status: being-tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9900000
+        end: 9999999
   - repo: coreruleset/nextcloud-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -190,6 +323,14 @@ plugins:
       version: 1.7.1
       ref_type: tag
       commit_sha: d907a20c7ca9c27d5666185c8ffab58f859d4832
+    registry:
+      name: nextcloud-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9508000
+        end: 9508999
   - repo: coreruleset/phpbb-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -199,6 +340,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 5f1e03417cd73f1a5f22040bf06680e86e49d71e
+    registry:
+      name: phpbb-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9512000
+        end: 9512999
   - repo: coreruleset/phpmyadmin-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -208,6 +357,14 @@ plugins:
       version: 1.1.0
       ref_type: tag
       commit_sha: 6629e888b9f9fee9ae8288a335233e2f37a5c0a5
+    registry:
+      name: phpmyadmin-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9513000
+        end: 9513999
   - repo: coreruleset/referer-hardening-plugin
     origin: registry
     pin: null
@@ -217,6 +374,14 @@ plugins:
       version: 431c124
       ref_type: sha
       commit_sha: 431c124c3384e73120a570e5a53aee2511ac418a
+    registry:
+      name: referer-hardening-plugin
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9524000
+        end: 9524999
   - repo: coreruleset/template-plugin
     origin: registry
     pin: null
@@ -226,6 +391,14 @@ plugins:
       version: fd3542b
       ref_type: sha
       commit_sha: fd3542bd583ba11de432cb7613fa7cf047dce821
+    registry:
+      name: template
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9500000
+        end: 9500999
   - repo: coreruleset/traffic-observation-plugin
     origin: registry
     pin: null
@@ -235,6 +408,14 @@ plugins:
       version: 2cde930
       ref_type: sha
       commit_sha: 2cde93006d28e04b0a85ce94a3eae18e4020f243
+    registry:
+      name: traffic-observation-plugin
+      type: official
+      status: untested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9526000
+        end: 9526999
   - repo: coreruleset/wordpress-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -244,6 +425,14 @@ plugins:
       version: 1.2.0
       ref_type: tag
       commit_sha: 161bb90bb0d543f805fc6cd966a7c53a2e5b08de
+    registry:
+      name: wordpress-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9507000
+        end: 9507999
   - repo: coreruleset/xenforo-rule-exclusions-plugin
     origin: registry
     pin: null
@@ -253,6 +442,14 @@ plugins:
       version: 1.0.0
       ref_type: tag
       commit_sha: 193288ac2faa8ccbc4d86cdf829047f477812f28
+    registry:
+      name: xenforo-rule-exclusions
+      type: official
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9511000
+        end: 9511999
   - repo: eilandert/wordpress-hardening-plugin
     origin: registry
     pin: null
@@ -262,6 +459,14 @@ plugins:
       version: 1.1.2
       ref_type: tag
       commit_sha: 2e2c2a5334fa519bdb74f246a95a3262631d546c
+    registry:
+      name: wordpress-hardening-plugin
+      type: 3rd-party
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9522000
+        end: 9522999
   - repo: netnea/netnea-crs-upgrading-plugin
     origin: registry
     pin: null
@@ -271,6 +476,14 @@ plugins:
       version: 0745d5e
       ref_type: sha
       commit_sha: 0745d5ecfba982a6656fb5481f773c356950d0b6
+    registry:
+      name: netnea-crs-upgrading-plugin
+      type: 3rd-party
+      status: untested
+      license: GPL-3.0
+      rule_id_range:
+        start: 9527000
+        end: 9527999
   - repo: eilandert/vimbadmin-crs-plugin
     origin: registry
     pin: null
@@ -280,3 +493,11 @@ plugins:
       version: 0d2192b
       ref_type: sha
       commit_sha: 0d2192bfe2f17342b82217abc8aeaae4e91a3740
+    registry:
+      name: vimbadmin-crs-plugin
+      type: 3rd-party
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9529000
+        end: 9529999
