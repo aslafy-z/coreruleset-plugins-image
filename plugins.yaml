@@ -371,9 +371,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 431c124
+      version: 112232a
       ref_type: sha
-      commit_sha: 431c124c3384e73120a570e5a53aee2511ac418a
+      commit_sha: 112232a37bb60ca29dd3fc548a3c395fdf2e6629
     registry:
       name: referer-hardening-plugin
       type: official
@@ -490,9 +490,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 0d2192b
+      version: 084f88b
       ref_type: sha
-      commit_sha: 0d2192bfe2f17342b82217abc8aeaae4e91a3740
+      commit_sha: 084f88b112752131d3ad1e3773c492e1511ca92b
     registry:
       name: vimbadmin-crs-plugin
       type: 3rd-party
