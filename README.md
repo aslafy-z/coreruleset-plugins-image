@@ -33,7 +33,8 @@ available without rebuilding the filter.
 - **Minimal.** A `FROM scratch` image; its root is `<plugin>/<files>` plus a
   machine-readable `manifest.json`. No shell, no base layer, no attack surface.
 - **Curated and reviewed.** The plugin set lives in `plugins.yaml` and tracks the
-  official [CRS plugin registry](https://github.com/coreruleset/plugin-registry).
+  official [CRS plugin registry](https://github.com/coreruleset/plugin-registry)
+  through its machine-readable `registry.json`.
   A nightly job proposes registry and version changes as pull requests; nothing
   reaches `:latest` without human review.
 - **Reproducible inputs.** Every plugin is pinned to a commit SHA. The build
