@@ -73,14 +73,14 @@ available without rebuilding the filter.
 | [coreruleset/nextcloud-rule-exclusions-plugin](https://github.com/coreruleset/nextcloud-rule-exclusions-plugin) | 1.7.1 | registry | `d907a20` |
 | [coreruleset/phpbb-rule-exclusions-plugin](https://github.com/coreruleset/phpbb-rule-exclusions-plugin) | 1.0.0 | registry | `5f1e034` |
 | [coreruleset/phpmyadmin-rule-exclusions-plugin](https://github.com/coreruleset/phpmyadmin-rule-exclusions-plugin) | 1.1.0 | registry | `6629e88` |
-| [coreruleset/referer-hardening-plugin](https://github.com/coreruleset/referer-hardening-plugin) | 431c124 | registry | `431c124` |
+| [coreruleset/referer-hardening-plugin](https://github.com/coreruleset/referer-hardening-plugin) | 112232a | registry | `112232a` |
 | [coreruleset/template-plugin](https://github.com/coreruleset/template-plugin) | fd3542b | registry | `fd3542b` |
 | [coreruleset/traffic-observation-plugin](https://github.com/coreruleset/traffic-observation-plugin) | 2cde930 | registry | `2cde930` |
 | [coreruleset/wordpress-rule-exclusions-plugin](https://github.com/coreruleset/wordpress-rule-exclusions-plugin) | 1.2.0 | registry | `161bb90` |
 | [coreruleset/xenforo-rule-exclusions-plugin](https://github.com/coreruleset/xenforo-rule-exclusions-plugin) | 1.0.0 | registry | `193288a` |
 | [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.1.2 | registry | `2e2c2a5` |
 | [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 0745d5e | registry | `0745d5e` |
-| [eilandert/vimbadmin-crs-plugin](https://github.com/eilandert/vimbadmin-crs-plugin) | 0d2192b | registry | `0d2192b` |
+| [eilandert/vimbadmin-crs-plugin](https://github.com/eilandert/vimbadmin-crs-plugin) | 084f88b | registry | `084f88b` |
 <!-- END BUNDLED PLUGINS -->
 
 ## Getting the files onto the WAF
