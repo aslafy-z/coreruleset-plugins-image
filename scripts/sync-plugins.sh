@@ -52,6 +52,15 @@ jq -r '.plugins[]
   | LC_ALL=C sort -u >"${tmp}/slugs.txt"
 [ -s "${tmp}/slugs.txt" ] || die "registry parse produced no slugs"
 
+# Vetting metadata the registry attests per plugin, keyed by slug. Copied into
+# plugins.yaml so the build can embed it in manifest.json without fetching the
+# registry itself, and so status changes go through the same reviewed PR.
+jq '[.plugins[]
+  | { key: (.repository | sub("^https://github\\.com/"; "") | sub("/$"; "")),
+      value: { name, type, status, license,
+               rule_id_range: { start: .rule_id_range.start, end: .rule_id_range.end } } }]
+  | from_entries' "${tmp}/registry.json" >"${tmp}/metadata.json"
+
 # --- 2. Reconcile registry slugs -----------------------------------------
 present="$(yq -o=json -I=0 '[.plugins[].repo]' "$PLUGINS_FILE")"
 managed="$(yq -o=json -I=0 \
@@ -110,6 +119,16 @@ for i in $(seq 0 $((count - 1))); do
   log "resolved ${repo} -> ${ver} (${rtype}) ${sha}"
   yq -i ".plugins[$i].resolved = {\"version\": \"${ver}\", \"ref_type\": \"${rtype}\", \"commit_sha\": \"${sha}\"}" \
     "$PLUGINS_FILE"
+
+  # Manual entries are not in the registry and carry no registry block.
+  if [ "$(yq ".plugins[$i].origin" "$PLUGINS_FILE")" = "registry" ]; then
+    meta="$(jq -c --arg slug "$repo" '.[$slug] // empty' "${tmp}/metadata.json")"
+    [ -n "$meta" ] || die "registry entry ${repo} has no registry metadata"
+    # env() yields flow style with quoted keys; reset keys and values to plain
+    # block style so the diff stays readable.
+    META="$meta" yq -i ".plugins[$i].registry = env(META) | (.plugins[$i].registry | ...) style=\"\"" \
+      "$PLUGINS_FILE"
+  fi
 done
 
 log "sync complete; plugins.yaml updated in place"
