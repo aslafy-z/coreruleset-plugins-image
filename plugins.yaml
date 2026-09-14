@@ -388,9 +388,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: fd3542b
+      version: 0be5533
       ref_type: sha
-      commit_sha: fd3542bd583ba11de432cb7613fa7cf047dce821
+      commit_sha: 0be55337cd0e30b6ff7e8bf776ff8d0406c2c330
     registry:
       name: template
       type: official
