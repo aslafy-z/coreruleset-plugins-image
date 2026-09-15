@@ -116,9 +116,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: e6b53a7
+      version: e423b49
       ref_type: sha
-      commit_sha: e6b53a7315c8c5128d6b75b8b025df7100e909be
+      commit_sha: e423b49d0277b6f45f3523a96de17135d28cdc51
     registry:
       name: antivirus
       type: official
@@ -133,9 +133,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 5d096ad
+      version: 6885a97
       ref_type: sha
-      commit_sha: 5d096ad94a4f5a30803cec6d087a425b8b8930ec
+      commit_sha: 6885a9728d3f657f0a5814fbd7349e71b186a64f
     registry:
       name: auto-decoding
       type: official
@@ -150,9 +150,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 80e7d9b
+      version: 6f47272
       ref_type: sha
-      commit_sha: 80e7d9b5d1d89fe5eaccdc5cba1fbe174efc0e44
+      commit_sha: 6f4727251e04e91f288cb6c9dd859f08df52ff44
     registry:
       name: body-decompress
       type: official
@@ -184,9 +184,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1f6ea17
+      version: ca29053
       ref_type: sha
-      commit_sha: 1f6ea17e92598ba0e18d3b1a49f3eb2be0c451a5
+      commit_sha: ca29053121ae0aa5403ff77c9b08459c1dafc3a5
     registry:
       name: database-logging-plugin
       type: official
@@ -371,9 +371,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 112232a
+      version: 11478a3
       ref_type: sha
-      commit_sha: 112232a37bb60ca29dd3fc548a3c395fdf2e6629
+      commit_sha: 11478a35c0d144c2987716f0adcea8d17bf81db0
     registry:
       name: referer-hardening-plugin
       type: official
