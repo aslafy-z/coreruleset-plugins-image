@@ -371,9 +371,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: cde1c33
+      version: 3f3120d
       ref_type: sha
-      commit_sha: cde1c33de36c46a1976015b7cbd1dcde621f5ef3
+      commit_sha: 3f3120dbb0b790e37c511cab6a009e7fcc5169da
     registry:
       name: referer-hardening-plugin
       type: official
@@ -405,9 +405,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 2cde930
+      version: 2b21e64
       ref_type: sha
-      commit_sha: 2cde93006d28e04b0a85ce94a3eae18e4020f243
+      commit_sha: 2b21e64c9a4755430d83f57657cf83130da022f5
     registry:
       name: traffic-observation-plugin
       type: official
