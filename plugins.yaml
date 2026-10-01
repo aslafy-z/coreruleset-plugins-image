@@ -269,9 +269,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 876efd0
+      version: 3717b6a
       ref_type: sha
-      commit_sha: 876efd0a60ae9c32f01be0620da93d09d2644987
+      commit_sha: 3717b6ab47c46eda517014a47ccbd54a1f6eb2c9
     registry:
       name: false-positive-report-plugin
       type: official
