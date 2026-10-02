@@ -116,13 +116,13 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: e423b49
+      version: d12a1f5
       ref_type: sha
-      commit_sha: e423b49d0277b6f45f3523a96de17135d28cdc51
+      commit_sha: d12a1f5c539770cf64f11d69820903097d48ccc5
     registry:
       name: antivirus
       type: official
-      status: being-tested
+      status: tested
       license: Apache-2.0
       rule_id_range:
         start: 9502000
@@ -184,13 +184,13 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: ca29053
+      version: 56d93ca
       ref_type: sha
-      commit_sha: ca29053121ae0aa5403ff77c9b08459c1dafc3a5
+      commit_sha: 56d93ca6fb25725114fe8ef522a28ec9b1f6688e
     registry:
       name: database-logging-plugin
       type: official
-      status: untested
+      status: tested
       license: Apache-2.0
       rule_id_range:
         start: 9523000
