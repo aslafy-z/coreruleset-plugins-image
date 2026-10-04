@@ -501,3 +501,37 @@ plugins:
       rule_id_range:
         start: 9529000
         end: 9529999
+  - repo: davidscarth/plex-hardening-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.0
+      ref_type: tag
+      commit_sha: 19a76764161380565e41fad7a480afdecf687c4b
+    registry:
+      name: plex-hardening-plugin
+      type: 3rd-party
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9531000
+        end: 9531999
+  - repo: davidscarth/plex-rule-exclusions-plugin
+    origin: registry
+    pin: null
+    dir: null
+    disabled: false
+    resolved:
+      version: 1.0.1
+      ref_type: tag
+      commit_sha: fdcbc1e6c8fe0e30af6cbd7b140d129453a9dacf
+    registry:
+      name: plex-rule-exclusions-plugin
+      type: 3rd-party
+      status: tested
+      license: Apache-2.0
+      rule_id_range:
+        start: 9530000
+        end: 9530999
