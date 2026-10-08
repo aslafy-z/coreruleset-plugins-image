@@ -456,9 +456,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.1.2
+      version: 1.3.0
       ref_type: tag
-      commit_sha: 2e2c2a5334fa519bdb74f246a95a3262631d546c
+      commit_sha: 5df6efd6b5ae5636b3f79d5d9341bb96e5f1d658
     registry:
       name: wordpress-hardening-plugin
       type: 3rd-party
