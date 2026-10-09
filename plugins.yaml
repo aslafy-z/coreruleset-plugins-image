@@ -150,9 +150,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 7a169bd
+      version: d0462fd
       ref_type: sha
-      commit_sha: 7a169bde351797503ded43910fae01e832936a21
+      commit_sha: d0462fda876b4277a13a225c3e852f699e36f244
     registry:
       name: body-decompress
       type: official
