@@ -81,7 +81,7 @@ available without rebuilding the filter.
 | [eilandert/wordpress-hardening-plugin](https://github.com/eilandert/wordpress-hardening-plugin) | 1.3.0 | registry | `5df6efd` |
 | [netnea/netnea-crs-upgrading-plugin](https://github.com/netnea/netnea-crs-upgrading-plugin) | 0745d5e | registry | `0745d5e` |
 | [eilandert/vimbadmin-crs-plugin](https://github.com/eilandert/vimbadmin-crs-plugin) | 084f88b | registry | `084f88b` |
-| [davidscarth/plex-hardening-plugin](https://github.com/davidscarth/plex-hardening-plugin) | 1.0.0 | registry | `19a7676` |
+| [davidscarth/plex-hardening-plugin](https://github.com/davidscarth/plex-hardening-plugin) | 1.0.1 | registry | `1e38bb4` |
 | [davidscarth/plex-rule-exclusions-plugin](https://github.com/davidscarth/plex-rule-exclusions-plugin) | 1.0.1 | registry | `fdcbc1e` |
 <!-- END BUNDLED PLUGINS -->
 
