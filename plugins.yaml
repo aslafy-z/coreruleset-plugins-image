@@ -507,9 +507,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.0.0
+      version: 1.0.1
       ref_type: tag
-      commit_sha: 19a76764161380565e41fad7a480afdecf687c4b
+      commit_sha: 1e38bb481bdac8cd33bc483160b0afe59d64a231
     registry:
       name: plex-hardening-plugin
       type: 3rd-party
