@@ -150,13 +150,13 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: d0462fd
+      version: 19d90de
       ref_type: sha
-      commit_sha: d0462fda876b4277a13a225c3e852f699e36f244
+      commit_sha: 19d90deac03776c3e0bd98df2ac0add10b7108a2
     registry:
       name: body-decompress
       type: official
-      status: being-tested
+      status: tested
       license: Apache-2.0
       rule_id_range:
         start: 9503000
