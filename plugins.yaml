@@ -371,9 +371,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 3f3120d
+      version: 81b1670
       ref_type: sha
-      commit_sha: 3f3120dbb0b790e37c511cab6a009e7fcc5169da
+      commit_sha: 81b16708afa25a68b5878610029b5379f0561b20
     registry:
       name: referer-hardening-plugin
       type: official
