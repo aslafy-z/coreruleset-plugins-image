@@ -212,23 +212,6 @@ plugins:
       rule_id_range:
         start: 9509000
         end: 9509999
-  - repo: coreruleset/dos-protection-plugin-modsecurity
-    origin: registry
-    pin: null
-    dir: null
-    disabled: false
-    resolved:
-      version: 98962f1
-      ref_type: sha
-      commit_sha: 98962f1f9c775f2797c0b320391f8616c7503469
-    registry:
-      name: dos-protection-modsecurity
-      type: official
-      status: untested
-      license: Apache-2.0
-      rule_id_range:
-        start: 9514000
-        end: 9514999
   - repo: coreruleset/drupal-rule-exclusions-plugin
     origin: registry
     pin: null
