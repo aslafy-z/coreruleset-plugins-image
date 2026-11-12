@@ -64,7 +64,6 @@ available without rebuilding the filter.
 | [coreruleset/cpanel-rule-exclusions-plugin](https://github.com/coreruleset/cpanel-rule-exclusions-plugin) | 1.0.0 | registry | `2fd1cab` |
 | [coreruleset/database-logging-plugin](https://github.com/coreruleset/database-logging-plugin) | 56d93ca | registry | `56d93ca` |
 | [coreruleset/dokuwiki-rule-exclusions-plugin](https://github.com/coreruleset/dokuwiki-rule-exclusions-plugin) | 1.0.0 | registry | `0099676` |
-| [coreruleset/dos-protection-plugin-modsecurity](https://github.com/coreruleset/dos-protection-plugin-modsecurity) | 98962f1 | registry | `98962f1` |
 | [coreruleset/drupal-rule-exclusions-plugin](https://github.com/coreruleset/drupal-rule-exclusions-plugin) | 1.0.0 | registry | `6771319` |
 | [coreruleset/fake-bot-plugin](https://github.com/coreruleset/fake-bot-plugin) | 1.1.0 | registry | `e7c675e` |
 | [coreruleset/false-positive-report-plugin](https://github.com/coreruleset/false-positive-report-plugin) | 3717b6a | registry | `3717b6a` |
