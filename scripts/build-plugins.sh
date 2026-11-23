@@ -87,9 +87,10 @@ jq -n --arg crs "$CRS_COMPAT" --arg commit "$COMMIT" --arg generated "$GENERATED
     platforms:($platforms | split(",")), build_digest:"", plugins:$plugins}' >"$MANIFEST"
 
 # Build-input digest: sorted staged paths+hashes (excluding manifest.json),
-# Dockerfile, payload scripts, normalized manifest-relevant plugins.yaml, and
-# the target platforms. The publish gate republishes only when this digest
-# moves, so anything that changes the pushed index has to feed into it.
+# Dockerfile, payload and metadata scripts, normalized manifest-relevant
+# plugins.yaml, and the target platforms. The publish gate republishes only when
+# this digest moves, so anything that changes the pushed index has to feed into
+# it.
 norm="$(yq -o=json '{
   "crs_compatibility": .crs_compatibility,
   "plugins": [ .plugins[] | select(.disabled != true)
@@ -100,7 +101,7 @@ norm="$(yq -o=json '{
 digest="$( {
   ( cd "$STAGING" && find . -type f ! -name manifest.json | LC_ALL=C sort \
     | while IFS= read -r f; do printf '%s  %s\n' "$f" "$(sha256sum "$f" | cut -d' ' -f1)"; done )
-  sha256sum Dockerfile scripts/build-plugins.sh scripts/pack-artifacts.sh | cut -d' ' -f1
+  sha256sum Dockerfile scripts/build-plugins.sh scripts/oci-metadata.sh scripts/pack-artifacts.sh | cut -d' ' -f1
   printf '%s\n' "$norm"
   printf '%s\n' "$PLATFORMS"
 } | sha256sum | cut -d' ' -f1 )"

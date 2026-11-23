@@ -104,7 +104,16 @@ jobs:
           tmp="$(mktemp)"; jq --arg v "$version" '.version=$v' staging/manifest.json >"$tmp"
           mv "$tmp" staging/manifest.json; cp staging/manifest.json manifest.json
           platforms="$(jq -r '.platforms | join(",")' manifest.json)"
+          # Labels reach consumers reading the image config; annotations reach
+          # registries. GHCR shows a multi-platform image's description from
+          # the index annotations only.
+          metadata="$(scripts/oci-metadata.sh manifest.json)"
+          metadata_args=()
+          while IFS= read -r kv; do
+            metadata_args+=(--label "$kv" --annotation "index,manifest:${kv}")
+          done <<<"$metadata"
           docker buildx build --platform "$platforms" \
+            "${metadata_args[@]}" \
             --metadata-file metadata.json \
             -t "${IMAGE}:${version}" -t "${IMAGE}:latest" --push .
           # Sign and attest the index, not one of the per-platform manifests it
