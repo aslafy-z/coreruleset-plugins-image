@@ -40,7 +40,7 @@ crs="$(jq -r .crs_compatibility "$MANIFEST")"
   printf 'CRS compatibility: %s\n\n' "$crs"
   printf '### Changes\n\n'
   if [ -n "$PREV_MANIFEST" ] && [ -f "$PREV_MANIFEST" ]; then
-    jq -rn --slurpfile cur "$MANIFEST" --slurpfile old "$PREV_MANIFEST" '
+    changes="$(jq -rn --slurpfile cur "$MANIFEST" --slurpfile old "$PREV_MANIFEST" '
       ($cur[0].plugins) as $c | ($old[0].plugins) as $o |
       ( [ $c[] | select(.repo as $r | ($o | map(.repo) | index($r)) | not)
           | "- added \(.repo)@\(.version)" ] ) +
@@ -48,7 +48,8 @@ crs="$(jq -r .crs_compatibility "$MANIFEST")"
           | select($p.version != $q.version)
           | "- \($p.dir) \($q.version) -> \($p.version)" ] ) +
       ( [ $o[] | select(.repo as $r | ($c | map(.repo) | index($r)) | not)
-          | "- removed \(.repo)@\(.version)" ] ) | .[]'
+          | "- removed \(.repo)@\(.version)" ] ) | .[]')"
+    printf '%s\n' "${changes:-No plugin changes.}"
   else
     jq -r '.plugins[] | "- added \(.repo)@\(.version)"' "$MANIFEST"
   fi
