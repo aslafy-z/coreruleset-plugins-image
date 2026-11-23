@@ -303,9 +303,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.7.1
+      version: 1.8.0
       ref_type: tag
-      commit_sha: d907a20c7ca9c27d5666185c8ffab58f859d4832
+      commit_sha: 7d657a84836827aed3065ce9279070ff402d72cf
     registry:
       name: nextcloud-rule-exclusions
       type: official
