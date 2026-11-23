@@ -189,6 +189,19 @@ The directory name defaults to the repository basename with the `-plugin` and
 `/etc/crs/plugins` (by mount or extraction) exposes
 `/etc/crs/plugins/<plugin>/<files>` with no doubled path segment.
 
+## Image metadata
+
+The image carries the standard
+[`org.opencontainers.image.*`](https://github.com/opencontainers/image-spec/blob/main/annotations.md)
+keys (`title`, `description`, `vendor`, `url`, `source`, `documentation`,
+`version`, `revision`, `created`). They are set as annotations on the index and on
+each platform manifest, and as labels in each image config.
+
+```bash
+docker buildx imagetools inspect --raw ghcr.io/aslafy-z/coreruleset-plugins:latest \
+  | jq .annotations
+```
+
 ## Verifying provenance
 
 ```bash
