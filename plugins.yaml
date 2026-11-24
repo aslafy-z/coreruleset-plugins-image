@@ -65,9 +65,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.0.0
+      version: 1.0.1
       ref_type: tag
-      commit_sha: 67d5d64a8059854759824140321195fae5187c5b
+      commit_sha: 8172c8df3e1524c5bc1854d290f0031db71a0956
     registry:
       name: plausible-rule-exclusions-plugin
       type: 3rd-party
@@ -99,9 +99,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.0.4
+      version: 1.0.5
       ref_type: tag
-      commit_sha: 4d0f073efe66dd506f79318d45b35705f9a173fb
+      commit_sha: acdea0f1d7ed70ca8edab112b0cbfbdff808b179
     registry:
       name: sogo-rule-exclusions-plugin
       type: 3rd-party
@@ -303,9 +303,9 @@ plugins:
     dir: null
     disabled: false
     resolved:
-      version: 1.8.0
+      version: 1.8.1
       ref_type: tag
-      commit_sha: 7d657a84836827aed3065ce9279070ff402d72cf
+      commit_sha: 7a61167690fd69af95b64e34d39c8737f4ddca96
     registry:
       name: nextcloud-rule-exclusions
       type: official
